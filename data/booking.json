@@ -1,0 +1,14 @@
+{
+  "bookings": {
+    "bookingId1": {
+      "id": "bookingId1",
+      "userId": "userId1",
+      "roomId": "roomId1",
+      "checkInDate": "2024-02-01",
+      "checkOutDate": "2024-02-05",
+      "totalPrice": 16560,
+      "status": "confirmed",
+      "createdAt": "2024-01-10T12:00:00Z"
+    }
+  }
+}

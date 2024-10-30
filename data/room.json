@@ -1,0 +1,119 @@
+{
+  "rooms": {
+    "room1": {
+      "id": "1",
+      "name": "King Room with Balcony",
+      "location": "Bangalore, India",
+      "pricePerNight": 3312,
+      "description": "Spacious room with a balcony and great views.",
+      "image": "https://cf.bstatic.com/xdata/images/hotel/max1280x900/433845616.jpg?k=87bc315f35830189d9a1c935c3e167e648543c27f39ee4cafc5cf73ee24393b9&o=&hp=1",
+      "amenities": [
+        "1 queen bed",
+        "Free Wi-Fi",
+        "Air conditioning",
+        "Breakfast included",
+        "Balcony"
+      ],
+      "coordinates": {
+        "latitude": "13.0359",
+        "longitude": "77.6431"
+      },
+      "bookingOptions": {
+        "isRefundable": true,
+        "paymentMethod": "Pay at the property"
+      }
+    },
+    "room2": {
+      "id": "2",
+      "name": "Deluxe King Room",
+      "location": "Hyderabad, India",
+      "pricePerNight": 3200,
+      "description": "Luxurious room with modern amenities and a king-sized bed.",
+      "image": "https://cf.bstatic.com/xdata/images/hotel/max1280x900/223496641.jpg?k=070266558a879c2926e5511569c4828a007a3e1057b63ccfa30120c859341d1d&o=&hp=1",
+      "amenities": [
+        "1 king bed",
+        "Free parking",
+        "Fitness center",
+        "Spa access",
+        "Mini bar"
+      ],
+      "coordinates": {
+        "latitude": "12.9784",
+        "longitude": "77.6408"
+      },
+      "bookingOptions": {
+        "isRefundable": false,
+        "paymentMethod": "Pay in advance"
+      }
+    },
+    "room3": {
+      "id": "3",
+      "name": "Two Bedroom with Balcony",
+      "location": "Bangalore, India",
+      "pricePerNight": 4100,
+      "description": "Perfect for families, featuring two bedrooms and a balcony.",
+      "image": "https://cf.bstatic.com/xdata/images/hotel/max1280x900/430695517.jpg?k=c2559cc321dd56a7beb32262c84d60bc1760430a4a49ac6f8713a2fa03cd0d36&o=&hp=1",
+      "amenities": [
+        "2 queen beds",
+        "Living area",
+        "Kitchenette",
+        "Balcony",
+        "Pet-friendly"
+      ],
+      "coordinates": {
+        "latitude": "13.1989",
+        "longitude": "77.7068"
+      },
+      "bookingOptions": {
+        "isRefundable": true,
+        "paymentMethod": "Pay at the property"
+      }
+    },
+    "room4": {
+      "id": "4",
+      "name": "Luxury Suite",
+      "location": "Hyderabad, India",
+      "pricePerNight": 5500,
+      "description": "A spacious suite with a separate living area and luxury amenities.",
+      "image": "https://cf.bstatic.com/xdata/images/hotel/max1280x900/433845639.jpg?k=c25b42f3a9ab42d7b73512131f63a2d2d1bb307f24949e654d24d1d97b6c8eec&o=&hp=1",
+      "amenities": [
+        "1 king bed",
+        "Hot tub",
+        "Free breakfast",
+        "Mini fridge",
+        "Room service"
+      ],
+      "coordinates": {
+        "latitude": "17.3850",
+        "longitude": "78.4867"
+      },
+      "bookingOptions": {
+        "isRefundable": true,
+        "paymentMethod": "Pay at the property"
+      }
+    },
+    "room5": {
+      "id": "5",
+      "name": "Budget Room",
+      "location": "Bangalore, India",
+      "pricePerNight": 2000,
+      "description": "A cozy budget room, ideal for solo travelers.",
+      "image": "https://cf.bstatic.com/xdata/images/hotel/max1280x900/433845678.jpg?k=b3c7afda6010fd06cb6d63962134cdb4e8ff2e7e1ef0e14e2f0c4d62490bd1d3&o=&hp=1",
+      "amenities": [
+        "1 single bed",
+        "Free Wi-Fi",
+        "Shared bathroom",
+        "Breakfast available",
+        "Air conditioning"
+      ],
+      "coordinates": {
+        "latitude": "12.9716",
+        "longitude": "77.5946"
+      },
+      "bookingOptions": {
+        "isRefundable": false,
+        "paymentMethod": "Pay in advance"
+      }
+    }
+  }
+}

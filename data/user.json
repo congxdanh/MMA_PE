@@ -1,0 +1,22 @@
+{
+  "users": {
+    "userId1": {
+      "id": "userId1",
+      "email": "user@example.com",
+      "passwordHash": "hashed_password",
+      "fullName": "John Doe",
+      "phone": "123-456-7890",
+      "createdAt": "2024-01-01T12:00:00Z",
+      "bookings": ["bookingId1", "bookingId2"]
+    },
+    "userId2": {
+      "id": "userId2",
+      "email": "user2@example.com",
+      "passwordHash": "hashed_password",
+      "fullName": "Jane Smith",
+      "phone": "987-654-3210",
+      "createdAt": "2024-01-05T12:00:00Z",
+      "bookings": []
+    }
+  }
+}
