@@ -1,18 +1,29 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useDispatch } from "react-redux";
+import { logout } from "../utils/actions/authActions";
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(logout()); // Thực hiện logout khi nhấn vào biểu tượng người dùng
+  };
+
   return (
     <View style={styles.header}>
-      <Pressable style={styles.button}>
-        <Ionicons name="menu" size={24} color="white" />
-      </Pressable>
       <Text style={styles.title}>Booking Room</Text>
-      <Pressable style={styles.button}>
-        <FontAwesome5 name="user" size={24} color="white" />
-      </Pressable>
+      <TouchableOpacity onPress={handleLogout} style={styles.button}>
+        <MaterialIcons name="logout" size={24} color="white" />
+      </TouchableOpacity>
     </View>
   );
 };

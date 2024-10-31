@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useReducer, useCallback, useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -7,33 +7,52 @@ import {
   TextInput,
   Alert,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation from React Navigation
+import { useDispatch } from "react-redux";
+import { signUp } from "../utils/actions/authActions";
+import { reducer } from "../utils/reducers/formReducers";
+import { validateInput } from "../utils/actions/formActions";
 
-const RegisterScreen = () => {
-  const navigation = useNavigation(); // Get the navigation object
+const initialState = {
+  inputValues: {
+    fullName: "",
+    email: "",
+    password: "",
+  },
+  inputValidities: {
+    fullName: false,
+    email: false,
+    password: false,
+  },
+  formIsValid: false,
+};
 
-  // State variables to hold user input
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+const RegisterScreen = ({ navigation }) => {
+  const [formState, dispatchFormState] = useReducer(reducer, initialState);
+  const dispatch = useDispatch();
 
-  const handleRegister = () => {
-    // Basic validation for empty fields
-    if (!email || !password || !confirmPassword) {
-      Alert.alert("Error", "Please fill in all fields.");
+  const inputChangedHandler = useCallback(
+    (inputId, inputValue) => {
+      const result = validateInput(inputId, inputValue);
+      dispatchFormState({ inputId, validationResult: result, inputValue });
+    },
+    [dispatchFormState]
+  );
+
+  const handleRegister = async () => {
+    const { fullName, email, password } = formState.inputValues;
+
+    if (!formState.formIsValid) {
+      Alert.alert("Error", "Please fill in all fields correctly.");
       return;
     }
 
-    // Check if passwords match
-    if (password !== confirmPassword) {
-      Alert.alert("Error", "Passwords do not match.");
-      return;
+    try {
+      await dispatch(signUp(fullName, email, password));
+      Alert.alert("Success", "Account created successfully!");
+      navigation.navigate("LoginScreen");
+    } catch (error) {
+      Alert.alert("Registration Failed", error.message);
     }
-
-    // Here you would typically handle the registration logic with Firebase or another service.
-    // For now, we will just navigate back to the Login screen.
-    Alert.alert("Success", "Registration successful!");
-    navigation.navigate("LoginScreen"); // Navigate back to LoginScreen after successful registration
   };
 
   return (
@@ -42,27 +61,26 @@ const RegisterScreen = () => {
 
       <TextInput
         style={styles.input}
+        placeholder="Full Name"
+        value={formState.inputValues.fullName}
+        onChangeText={(text) => inputChangedHandler("fullName", text)}
+      />
+
+      <TextInput
+        style={styles.input}
         placeholder="Email"
-        value={email}
-        onChangeText={setEmail} // Update email state
-        keyboardType="email-address" // Email keyboard
-        autoCapitalize="none" // Disable automatic capitalization
+        value={formState.inputValues.email}
+        onChangeText={(text) => inputChangedHandler("email", text)}
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
 
       <TextInput
         style={styles.input}
         placeholder="Password"
-        value={password}
-        onChangeText={setPassword} // Update password state
-        secureTextEntry // Hide password input
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword} // Update confirm password state
-        secureTextEntry // Hide confirm password input
+        value={formState.inputValues.password}
+        onChangeText={(text) => inputChangedHandler("password", text)}
+        secureTextEntry
       />
 
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
@@ -87,7 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F5F5F5",
-    padding: 20, // Add some padding
+    padding: 20,
   },
   title: {
     fontSize: 24,
@@ -95,30 +113,30 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   input: {
-    width: "100%", // Full width
+    width: "100%",
     padding: 10,
     marginBottom: 15,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 5,
-    backgroundColor: "#ffffff", // Background color for inputs
+    backgroundColor: "#ffffff",
   },
   button: {
     backgroundColor: "#003580",
     padding: 10,
     borderRadius: 5,
-    width: "100%", // Full width for button
+    width: "100%",
   },
   buttonText: {
     color: "#FFFFFF",
     fontSize: 18,
-    textAlign: "center", // Center the text in the button
+    textAlign: "center",
   },
   loginButton: {
-    marginTop: 20, // Space above the login button
+    marginTop: 20,
   },
   loginText: {
-    color: "#003580", // Color for the login link
+    color: "#003580",
     fontSize: 16,
   },
 });

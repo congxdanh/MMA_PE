@@ -10,10 +10,14 @@ import BookingScreen from "./screens/BookingScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-// import RegisterScreen from "./screens/RegisterScreen";
+import { useSelector } from "react-redux";
+
 const StackNavigator = () => {
   const Tab = createBottomTabNavigator();
   const Stack = createNativeStackNavigator();
+
+  const token = useSelector((state) => state.auth.token);
+  console.log("token", token);
 
   function BottomTabs() {
     return (
@@ -56,17 +60,19 @@ const StackNavigator = () => {
   }
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="LoginScreen">
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen
-          name="Main"
-          component={BottomTabs}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="RegisterScreen"
-          component={RegisterScreen} // Add the RegisterScreen to the navigator
-        />
+      <Stack.Navigator initialRouteName={token ? "Main" : "LoginScreen"}>
+        {!token ? (
+          <>
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+          </>
+        ) : (
+          <Stack.Screen
+            name="Main"
+            component={BottomTabs}
+            options={{ headerShown: false }}
+          />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
