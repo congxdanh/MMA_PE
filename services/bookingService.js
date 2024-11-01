@@ -1,5 +1,12 @@
-// bookingService.js
-import { getDatabase, ref, get, child, remove } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  get,
+  child,
+  remove,
+  set,
+  push,
+} from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { getFirebaseApp } from "../utils/firebaseHelper";
 
@@ -9,21 +16,58 @@ export const fetchUserBookings = async () => {
   const auth = getAuth();
   const userId = auth.currentUser.uid;
 
-  const bookingsRef = ref(db, `bookings/${userId}`);
+  const userBookingsRef = ref(db, `bookings/${userId}`);
   try {
-    const snapshot = await get(bookingsRef);
+    const snapshot = await get(userBookingsRef);
     if (snapshot.exists()) {
       const data = snapshot.val();
-      return Object.keys(data).map((key) => ({
-        id: key,
-        ...data[key],
+      console.log("Fetched bookings:", data); // Log to check data structure
+
+      // Flatten the bookings into an array
+      return Object.keys(data).map((bookingId) => ({
+        id: bookingId,
+        ...data[bookingId],
       }));
     } else {
+      console.log("No bookings found for this user.");
       return [];
     }
   } catch (error) {
     console.error("Error fetching bookings: ", error);
     return [];
+  }
+};
+
+// Function to create a new booking
+export const createBooking = async (room, checkInDate, checkOutDate) => {
+  const db = getDatabase(getFirebaseApp());
+  const auth = getAuth();
+  const userId = auth.currentUser.uid;
+
+  const newBookingRef = push(ref(db, `bookings/${userId}`));
+  const totalPrice = calculateTotalPrice(
+    room.pricePerNight,
+    checkInDate,
+    checkOutDate
+  );
+
+  const bookingData = {
+    roomId: room.id,
+    roomName: room.name,
+    location: room.location,
+    checkInDate,
+    checkOutDate,
+    totalPrice,
+    status: "upcoming",
+  };
+
+  try {
+    await set(newBookingRef, bookingData);
+    console.log(`Booking created successfully with ID: ${newBookingRef.key}`);
+    return { id: newBookingRef.key, ...bookingData };
+  } catch (error) {
+    console.error("Error creating booking: ", error);
+    return null;
   }
 };
 
@@ -40,4 +84,12 @@ export const cancelBooking = async (bookingId) => {
   } catch (error) {
     console.error("Error canceling booking: ", error);
   }
+};
+
+// Helper function to calculate the total price based on nights
+const calculateTotalPrice = (pricePerNight, checkInDate, checkOutDate) => {
+  const start = new Date(checkInDate);
+  const end = new Date(checkOutDate);
+  const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+  return nights * pricePerNight;
 };

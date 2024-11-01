@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, Button, Alert, StyleSheet } from "react-native";
-import { fetchUserBookings, cancelBooking } from "../services/bookingService"; // Define these functions in your service
+import {
+  View,
+  Text,
+  FlatList,
+  Alert,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import { fetchUserBookings, cancelBooking } from "../services/bookingService";
+import Header from "../components/Header";
 
 const BookingScreen = () => {
   const [upcomingBookings, setUpcomingBookings] = useState([]);
@@ -9,14 +17,19 @@ const BookingScreen = () => {
   useEffect(() => {
     const loadBookings = async () => {
       const bookings = await fetchUserBookings();
-      const now = new Date();
+      const now = new Date().toISOString();
 
-      setUpcomingBookings(
-        bookings.filter((booking) => new Date(booking.checkIn) > now)
-      );
-      setPastBookings(
-        bookings.filter((booking) => new Date(booking.checkOut) < now)
-      );
+      console.log("Current UTC Date (now):", now);
+
+      // Define upcoming and past bookings based on checkOutDate
+      const upcoming = bookings.filter((booking) => booking.checkOutDate > now);
+      const past = bookings.filter((booking) => booking.checkOutDate <= now);
+
+      setUpcomingBookings(upcoming);
+      setPastBookings(past);
+
+      console.log("Filtered Upcoming Bookings:", upcoming);
+      console.log("Filtered Past Bookings:", past);
     };
 
     loadBookings();
@@ -43,17 +56,20 @@ const BookingScreen = () => {
 
   const renderBooking = ({ item }) => (
     <View style={styles.bookingItem}>
-      <Text style={styles.roomName}>Room: {item.roomName}</Text>
-      <Text>
-        Date: {item.checkIn} to {item.checkOut}
+      <Text style={styles.roomName}>{item.roomName}</Text>
+      <Text style={styles.bookingDetails}>
+        Date: {new Date(item.checkInDate).toLocaleDateString()} to{" "}
+        {new Date(item.checkOutDate).toLocaleDateString()}
       </Text>
-      <Text>Location: {item.location}</Text>
-      <Text>Price: ${item.price}</Text>
-      {item.isUpcoming && (
-        <Button
-          title="Cancel Booking"
+      <Text style={styles.bookingDetails}>Location: {item.location}</Text>
+      <Text style={styles.bookingDetails}>Price: ${item.totalPrice}</Text>
+      {item.status === "upcoming" && (
+        <TouchableOpacity
+          style={styles.cancelButton}
           onPress={() => handleCancelBooking(item.id)}
-        />
+        >
+          <Text style={styles.cancelButtonText}>Cancel Booking</Text>
+        </TouchableOpacity>
       )}
     </View>
   );
@@ -65,6 +81,9 @@ const BookingScreen = () => {
         data={upcomingBookings}
         renderItem={renderBooking}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={
+          <Text style={styles.emptyMessage}>No upcoming bookings.</Text>
+        }
       />
 
       <Text style={styles.title}>Past Bookings</Text>
@@ -72,6 +91,9 @@ const BookingScreen = () => {
         data={pastBookings}
         renderItem={renderBooking}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={
+          <Text style={styles.emptyMessage}>No past bookings.</Text>
+        }
       />
     </View>
   );
@@ -80,13 +102,38 @@ const BookingScreen = () => {
 export default BookingScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16 },
-  title: { fontSize: 20, fontWeight: "bold", marginVertical: 10 },
-  bookingItem: {
-    backgroundColor: "#fff",
-    padding: 16,
-    marginBottom: 10,
-    borderRadius: 8,
+  container: { flex: 1, padding: 16, backgroundColor: "#F3F4F6" },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginVertical: 12,
+    color: "#003580",
   },
-  roomName: { fontSize: 18, fontWeight: "bold" },
+  bookingItem: {
+    backgroundColor: "#FFFFFF",
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  roomName: { fontSize: 20, fontWeight: "bold", color: "#333" },
+  bookingDetails: { fontSize: 16, color: "#555", marginVertical: 4 },
+  cancelButton: {
+    marginTop: 12,
+    backgroundColor: "#D9534F",
+    paddingVertical: 10,
+    borderRadius: 6,
+    alignItems: "center",
+  },
+  cancelButtonText: { color: "#FFF", fontSize: 16, fontWeight: "bold" },
+  emptyMessage: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "#777",
+    marginVertical: 10,
+  },
 });

@@ -60,7 +60,6 @@ const HomeScreen = () => {
 
   return (
     <View>
-      <Header />
       <View style={styles.container}>
         <Text style={styles.title}>Available Rooms</Text>
         <FlatList
