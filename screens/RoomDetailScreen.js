@@ -12,6 +12,7 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import MapView, { Marker } from "react-native-maps";
 import { createBooking } from "../services/bookingService";
+import { useNavigation } from "@react-navigation/native";
 
 const RoomDetailScreen = ({ route }) => {
   const { room } = route.params;
@@ -19,6 +20,7 @@ const RoomDetailScreen = ({ route }) => {
   const [checkOutDate, setCheckOutDate] = useState(null);
   const [showCheckInPicker, setShowCheckInPicker] = useState(false);
   const [showCheckOutPicker, setShowCheckOutPicker] = useState(false);
+  const navigation = useNavigation();
 
   const handleBooking = async () => {
     if (!checkInDate || !checkOutDate) {
@@ -37,6 +39,7 @@ const RoomDetailScreen = ({ route }) => {
           "Booking Successful",
           "Your room has been booked successfully!"
         );
+        navigation.navigate("Bookings");
       } else {
         Alert.alert("Booking Failed", "There was a problem with your booking.");
       }

@@ -8,6 +8,7 @@ import BookingScreen from "./screens/BookingScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import { useSelector } from "react-redux";
+import { Entypo, AntDesign, Ionicons } from "@expo/vector-icons";
 import Header from "./components/Header"; // Import Header
 
 const StackNavigator = () => {

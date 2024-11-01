@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -9,10 +9,30 @@ import {
 } from "react-native";
 import { fetchUserBookings, cancelBooking } from "../services/bookingService";
 import Header from "../components/Header";
-
+import { useFocusEffect } from "@react-navigation/native";
 const BookingScreen = () => {
   const [upcomingBookings, setUpcomingBookings] = useState([]);
   const [pastBookings, setPastBookings] = useState([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const loadBookings = async () => {
+        const bookings = await fetchUserBookings();
+        const now = new Date().toISOString();
+
+        // Phân loại thành upcoming và past bookings
+        const upcoming = bookings.filter(
+          (booking) => booking.checkOutDate > now
+        );
+        const past = bookings.filter((booking) => booking.checkOutDate <= now);
+
+        setUpcomingBookings(upcoming);
+        setPastBookings(past);
+      };
+
+      loadBookings();
+    }, [])
+  );
 
   useEffect(() => {
     const loadBookings = async () => {
