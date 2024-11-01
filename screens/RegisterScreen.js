@@ -38,6 +38,23 @@ const RegisterScreen = ({ navigation }) => {
     [dispatchFormState]
   );
 
+  // const handleRegister = async () => {
+  //   const { fullName, email, password } = formState.inputValues;
+
+  //   if (!formState.formIsValid) {
+  //     Alert.alert("Error", "Please fill in all fields correctly.");
+  //     return;
+  //   }
+
+  //   try {
+  //     await dispatch(signUp(fullName, email, password));
+  //     Alert.alert("Success", "Account created successfully!");
+  //     navigation.navigate("LoginScreen");
+  //   } catch (error) {
+  //     Alert.alert("Registration Failed", error.message);
+  //   }
+  // };
+
   const handleRegister = async () => {
     const { fullName, email, password } = formState.inputValues;
 
@@ -47,14 +64,15 @@ const RegisterScreen = ({ navigation }) => {
     }
 
     try {
-      await dispatch(signUp(fullName, email, password));
-      Alert.alert("Success", "Account created successfully!");
-      navigation.navigate("LoginScreen");
+      const result = await dispatch(signUp(fullName, email, password));
+      if (result) {
+        Alert.alert("Success", "Account created successfully!");
+        navigation.navigate("LoginScreen"); // Điều hướng về LoginScreen
+      }
     } catch (error) {
       Alert.alert("Registration Failed", error.message);
     }
   };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Register Screen</Text>

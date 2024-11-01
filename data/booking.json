@@ -1,14 +1,44 @@
 {
   "bookings": {
-    "bookingId1": {
-      "id": "bookingId1",
-      "userId": "userId1",
-      "roomId": "roomId1",
-      "checkInDate": "2024-02-01",
-      "checkOutDate": "2024-02-05",
+    "booking1": {
+      "userId": "user1",
+      "roomId": "1",
+      "checkInDate": "2024-11-05",
+      "checkOutDate": "2024-11-10",
       "totalPrice": 16560,
-      "status": "confirmed",
-      "createdAt": "2024-01-10T12:00:00Z"
+      "status": "upcoming"
+    },
+    "booking2": {
+      "userId": "user2",
+      "roomId": "2",
+      "checkInDate": "2024-11-08",
+      "checkOutDate": "2024-11-12",
+      "totalPrice": 12800,
+      "status": "upcoming"
+    },
+    "booking3": {
+      "userId": "user1",
+      "roomId": "3",
+      "checkInDate": "2024-10-15",
+      "checkOutDate": "2024-10-20",
+      "totalPrice": 20500,
+      "status": "past"
+    },
+    "booking4": {
+      "userId": "user3",
+      "roomId": "4",
+      "checkInDate": "2024-12-01",
+      "checkOutDate": "2024-12-05",
+      "totalPrice": 27500,
+      "status": "upcoming"
+    },
+    "booking5": {
+      "userId": "user2",
+      "roomId": "5",
+      "checkInDate": "2024-10-01",
+      "checkOutDate": "2024-10-03",
+      "totalPrice": 4000,
+      "status": "past"
     }
   }
 }

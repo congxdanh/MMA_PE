@@ -3,6 +3,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./screens/HomeScreen";
+import RoomDetailScreen from "./screens/RoomDetailScreen";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -67,11 +68,18 @@ const StackNavigator = () => {
             <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
           </>
         ) : (
-          <Stack.Screen
-            name="Main"
-            component={BottomTabs}
-            options={{ headerShown: false }}
-          />
+          <>
+            <Stack.Screen
+              name="Main"
+              component={BottomTabs}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="RoomDetail"
+              component={RoomDetailScreen} // Add RoomDetailScreen to the Stack Navigator
+              options={{ title: "Room Details" }}
+            />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>
